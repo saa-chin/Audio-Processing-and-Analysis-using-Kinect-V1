@@ -16,7 +16,6 @@ using Microsoft.Kinect;
 using System.Windows.Threading;
 using System.IO;
 using System.Threading;
-using System.Windows.Shapes;
 
 namespace MicArray
 {
@@ -31,6 +30,11 @@ namespace MicArray
         // Skeleton[] totalSkeleton = new Skeleton[6];
         Stream audioStream;
         string wavfilename = "c:\\Users\\Sachin\\Desktop\\KinectAudio.wav";
+
+        double degrees;
+
+        Skeleton[] totalSkeleton = new Skeleton[6];
+
 
 
         public MainWindow()
@@ -87,9 +91,11 @@ namespace MicArray
 
             this.sensor.AudioSource.BeamAngleChanged += beamAngleChanged;
 
-            
 
-            
+            this.sensor.SkeletonStream.TrackingMode = SkeletonTrackingMode.Default;
+            this.sensor.SkeletonStream.Enable();
+            this.sensor.SkeletonFrameReady += skeletonFrameReady;
+
 
             // start the sensor.
             this.sensor.Start();
@@ -98,6 +104,59 @@ namespace MicArray
           //  progressBar.Value = 10;
 
         }
+
+        void skeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
+        {
+            using (SkeletonFrame skeletonFrame = e.OpenSkeletonFrame())
+            {
+                if (skeletonFrame == null)
+                {
+                    return;
+                }
+                skeletonFrame.CopySkeletonDataTo(totalSkeleton);
+                Skeleton firstSkeleton = (from trackskeleton in totalSkeleton
+                                          where trackskeleton.TrackingState == SkeletonTrackingState.Tracked
+                                          select trackskeleton).FirstOrDefault();
+                if (firstSkeleton == null)
+                {
+                    return;
+                }
+                if (firstSkeleton.Joints[JointType.HandRight].TrackingState ==
+                   JointTrackingState.Tracked)
+                {
+                    this.MapJointsWithUIElement(firstSkeleton);
+                }
+            }
+        }
+
+
+        private void MapJointsWithUIElement(Skeleton skeleton)
+        {
+            Point mappedPoint = ScalePosition(skeleton.Joints[JointType.HandRight].Position);
+
+            double min = 10;
+            double max = 250;
+
+            double percentage = mappedPoint.X / 640;
+
+            double location = min + percentage * (max - min);
+
+            Canvas.SetLeft(righthand, location);
+
+         //   beam_angle_input.Text = mappedPoint.X.ToString();
+
+           // Canvas.SetTop(righthand, mappedPoint.Y);
+            //this.textBox1.Text = "x="+mappedPoint.X+", y="+mappedPoint.Y;
+        }
+
+        private Point ScalePosition(SkeletonPoint skeletonPoint)
+        {
+            DepthImagePoint depthPoint = this.sensor.CoordinateMapper.
+                      MapSkeletonPointToDepthPoint(skeletonPoint, DepthImageFormat.
+                                 Resolution640x480Fps30);
+            return new Point(depthPoint.X, depthPoint.Y);
+        }
+
 
         private void startAudioStreamBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -119,7 +178,7 @@ namespace MicArray
 
             int pos = 0;
             double percentage = e.Angle / 50;
-            pos = (int) (125 + (125*percentage)); //125 is 250/2 where 230 is width of the image view
+            pos = (int) (130 + (120*percentage)); //120 is 240/2 where 240 is width of the image view
 
             ////
             Canvas.SetLeft(beamAngleMarker, pos);
@@ -133,7 +192,7 @@ namespace MicArray
 
             int pos = 0;
             double percentage = e.Angle / 50;
-            pos = (int)(125 + (125 * percentage)); //125 is 250/2 where 230 is width of the image view
+            pos = (int)(130 + (120 * percentage)); //120 is 240/2 where 240 is width of the image view
 
             ////
             Canvas.SetLeft(SourceAngleMarker, pos);
@@ -342,6 +401,29 @@ namespace MicArray
         this.sensor.AudioSource.NoiseSuppression = false;
     }
 
-      
+        private void beamManual_Checked(object sender, RoutedEventArgs e)
+        {
+
+            this.sensor.AudioSource.BeamAngleMode = BeamAngleMode.Manual;
+
+            double x = Canvas.GetLeft(righthand);
+
+            double beam_manual = (x - 10) / 240 * 100;
+
+            beam_manual = beam_manual - 50;
+
+            ////
+            
+            beam_angle_manual.Text = beam_manual.ToString();
+            
+            this.sensor.AudioSource.ManualBeamAngle = beam_manual;
+            
+           
+        }
+
+        private void beamManual_Unchecked(object sender, RoutedEventArgs e)
+        {
+            this.sensor.AudioSource.BeamAngleMode = BeamAngleMode.Automatic;
+        }
     }
 }

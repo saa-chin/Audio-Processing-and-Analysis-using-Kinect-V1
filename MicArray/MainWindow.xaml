@@ -12,9 +12,10 @@
         </Grid.RowDefinitions>
 
         <Canvas x:Name ="canvas" HorizontalAlignment="Left" Height="263" Margin="0,10,0,0" VerticalAlignment="Top" Width="261">
-            <Image x:Name="image_view" HorizontalAlignment="Left" Height="180" VerticalAlignment="Top" Width="250" Canvas.Left="10" Canvas.Top="43"/>
+            <Image x:Name="image_view" HorizontalAlignment="Left" Height="180" VerticalAlignment="Top" Width="240" Canvas.Left="10" Canvas.Top="43"/>
             <Rectangle x:Name ="beamAngleMarker" Fill="#FFB50000" HorizontalAlignment="Left" Height="180" VerticalAlignment="Top" Width="2" Canvas.Left="10" Canvas.Top="43"/>
             <Rectangle x:Name ="SourceAngleMarker" Fill="#FF098800" HorizontalAlignment="Left" Height="180" VerticalAlignment="Top" Width="2" Canvas.Left="10" Canvas.Top="43"/>
+            <Rectangle x:Name="righthand" Fill="White" Height="180" Canvas.Left="249" Stroke="White" Canvas.Top="43" Width="1"/>
 
         </Canvas>
 
@@ -23,21 +24,25 @@
         <Button x:Name="start_button" Content="⚫ RECORD" HorizontalAlignment="Left" Margin="266,278,0,0" VerticalAlignment="Top" Width="156" Click="startBtn_Click" Background="#FF990000" Height="34" FontWeight="Bold" Foreground="White"/>
         <Button x:Name="play_button" Content="Play" HorizontalAlignment="Left" Margin="427,278,0,0" VerticalAlignment="Top" Width="83" Click="playBtn_Click" Background="{x:Null}" Height="34" FontWeight="Bold"/>
 
-        <CheckBox x:Name="noise_suspension" Content="Noise Suppression" HorizontalAlignment="Left" Margin="269,182,0,0" VerticalAlignment="Top" Checked="noiseSuppression_Checked" Unchecked="noiseSuppression_Unchecked"/>
-        <CheckBox x:Name="echo_cancellatiotonn" Content="Echo Cancellation" HorizontalAlignment="Left" Margin="269,206,0,0" VerticalAlignment="Top" Checked="echoCancellation_Checked" Unchecked="echoCancellation_Unchecked"/>
-        <CheckBox x:Name="automatic_gain_control" Content="Automatic Gain Control" HorizontalAlignment="Left" Margin="269,228,0,0" VerticalAlignment="Top" Checked="gainControl_Checked" Unchecked="gainControl_Unchecked"/>
+        <CheckBox x:Name="beam_angle_mode" Content="Manual Mode" HorizontalAlignment="Left" Margin="269,144,0,0" VerticalAlignment="Top" Checked="beamManual_Checked" Unchecked="beamManual_Unchecked"/>
+        <TextBox x:Name="beam_angle_manual" HorizontalAlignment="Left" Height="23" Margin="390,139,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120"/>
 
-        <TextBlock x:Name="t1" HorizontalAlignment="Left" Margin="269,56,0,0" TextWrapping="Wrap" Text="Sound Source Angle" VerticalAlignment="Top"/>
+
+        <CheckBox x:Name="noise_suspension" Content="Noise Suppression" HorizontalAlignment="Left" Margin="269,193,0,0" VerticalAlignment="Top" Checked="noiseSuppression_Checked" Unchecked="noiseSuppression_Unchecked"/>
+        <CheckBox x:Name="echo_cancellatiotonn" Content="Echo Cancellation" HorizontalAlignment="Left" Margin="269,217,0,0" VerticalAlignment="Top" Checked="echoCancellation_Checked" Unchecked="echoCancellation_Unchecked"/>
+        <CheckBox x:Name="automatic_gain_control" Content="Automatic Gain Control" HorizontalAlignment="Left" Margin="269,239,0,0" VerticalAlignment="Top" Checked="gainControl_Checked" Unchecked="gainControl_Unchecked"/>
+
+        <TextBlock x:Name="t1" HorizontalAlignment="Left" Margin="269,56,0,0" TextWrapping="Wrap" Text="Sound Source Angle" VerticalAlignment="Top" Foreground="#FF098800"/>
         <TextBlock x:Name="t2" HorizontalAlignment="Left" Margin="282,83,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="Confidence Angle"/>
-        <TextBlock x:Name="t3" HorizontalAlignment="Left" Margin="316,111,0,0" TextWrapping="Wrap" Text="Beam Angle" VerticalAlignment="Top"/>
+        <TextBlock x:Name="t3" HorizontalAlignment="Left" Margin="316,111,0,0" TextWrapping="Wrap" Text="Beam Angle" VerticalAlignment="Top" Foreground="#FFB50000"/>
 
-        <MediaElement x:Name="mediaElement" HorizontalAlignment="Left" Height="72" Margin="430,181,0,0" VerticalAlignment="Top" Width="80"/>
+        <MediaElement x:Name="mediaElement" HorizontalAlignment="Left" Height="72" Margin="430,192,0,0" VerticalAlignment="Top" Width="80"/>
 
         <TextBox x:Name="sound_source_angle" HorizontalAlignment="Left" Height="23" Margin="390,51,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="confidence_angle" HorizontalAlignment="Left" Height="23" Margin="390,80,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="beam_angle" HorizontalAlignment="Left" Height="23" Margin="390,110,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120"/>
         <TextBlock x:Name="t1_Copy" HorizontalAlignment="Left" Margin="269,20,0,0" TextWrapping="Wrap" Text="Sound Source Localization" VerticalAlignment="Top" FontWeight="Bold"/>
-        <TextBlock x:Name="t1_Copy1" HorizontalAlignment="Left" Margin="269,155,0,0" TextWrapping="Wrap" Text="Audio Processing" VerticalAlignment="Top" FontWeight="Bold"/>
+        <TextBlock x:Name="t1_Copy1" HorizontalAlignment="Left" Margin="269,173,0,0" TextWrapping="Wrap" Text="Audio Processing" VerticalAlignment="Top" FontWeight="Bold"/>
         <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="15" Margin="266,258,0,0" VerticalAlignment="Top" Width="156"/>
         <TextBlock x:Name="progress" HorizontalAlignment="Left" Margin="430,258,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
 
